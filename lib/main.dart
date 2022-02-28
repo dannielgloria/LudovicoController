@@ -1,115 +1,483 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
+import 'package:rxdart/rxdart.dart';
+
+import 'app_style.dart';
+import 'bluetooth.dart';
 
 void main() {
-  runApp(const MyApp());
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
+  return runApp(LudovicoControllerApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
+class LudovicoControllerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Ludovico Controller',
+      home: Scaffold(
+        body: MyHomePage(),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
+  const MyHomePage({Key? key}) : super(key: key);
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  late BehaviorSubject<int> willAcceptStream;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  Color background = AppColors.lightBackground;
+  Color text = AppColors.lightText;
+  Color select = AppColors.lightSelect;
+  Color icon = AppColors.lightIcon;
+  Color buttonBackground = AppColors.lightButtonBackground;
+  Color iconButton = AppColors.lightIconButton;
+  Icon darkMode = AppColors.lightDarkMode;
+  AssetImage uamLogo = AppColors.lightUAM;
+
+  @override
+  void initState() {
+    willAcceptStream = new BehaviorSubject<int>();
+    willAcceptStream.add(0);
+    super.initState();
+  }
+
+  void _fuctionDrag(String msg) {
+    final snackBar = SnackBar(
+        content: Text(msg),
+        behavior: SnackBarBehavior.floating,
+        duration: Duration(milliseconds: 500));
+    Scaffold.of(context).showSnackBar(snackBar);
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+    var size = MediaQuery.of(context).size;
+
+    return SafeArea(
+      child: Container(
+        width: size.width,
+        height: size.height,
+        color: background,
+        child: FittedBox(
+          fit: BoxFit.contain,
+          alignment: Alignment.center,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Container(
+                  width: size.width,
+                  height: size.height * 0.1,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        RichText(
+                          text: TextSpan(
+                            text: 'Ludo',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: text,
+                              fontSize: 20,
+                            ),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: 'vico',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  color: text,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Spacer(),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Bluetooth()),
+                            );
+                          },
+                          child: Container(
+                            child: Icon(
+                              Icons.settings_bluetooth,
+                              color: select,
+                              size: 28,
+                            ),
+                          ),
+                        ),
+                        Icon(
+                          Icons.keyboard_arrow_down,
+                          color: select,
+                          size: 28,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  width: size.width,
+                  height: size.height * 0.11,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Container(
+                        width: size.height * 0.11,
+                        height: size.height * 0.08,
+                        child: const Icon(
+                          Icons.battery_std_sharp,
+                          color: Colors.transparent,
+                          size: 38,
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          print("Dispensando Gel");
+                        },
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        child: Container(
+                          padding: const EdgeInsets.all(2),
+                          width: size.height * 0.11,
+                          height: size.height * 0.11,
+                          decoration: BoxDecoration(
+                            color: buttonBackground,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Icon(
+                            Icons.clean_hands_rounded,
+                            color: Color(0xFF0077B6),
+                            size: 38,
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: size.height * 0.11,
+                        height: size.height * 0.08,
+                        child: const Icon(
+                          Icons.battery_std_sharp,
+                          color: Colors.transparent,
+                          size: 28,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: size.width,
+                  height: size.height * 0.25,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Container(
+                        width: size.width * 0.20,
+                        height: size.height * 0.25,
+                        decoration: BoxDecoration(
+                          color: buttonBackground,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(40.0),
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            Text(
+                              "Si",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: iconButton,
+                                fontSize: 24,
+                              ),
+                            ),
+                            Icon(
+                              Icons.smart_toy_outlined,
+                              color: text,
+                              size: 38,
+                            ),
+                            Text(
+                              "No",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: iconButton,
+                                fontSize: 24,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(2),
+                        width: size.width * 0.2,
+                        height: size.width * 0.2,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                          image: uamLogo,
+                        )),
+                      ),
+                      Container(
+                        width: size.width * 0.20,
+                        height: size.height * 0.25,
+                        decoration: BoxDecoration(
+                          color: buttonBackground,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(40.0),
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            Text(
+                              "Der",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: iconButton,
+                                fontSize: 24,
+                              ),
+                            ),
+                            Icon(
+                              Icons.precision_manufacturing_outlined,
+                              color: text,
+                              size: 38,
+                            ),
+                            Text(
+                              "Izq",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: iconButton,
+                                fontSize: 24,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: size.width,
+                  height: size.height * 0.10,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        Icons.keyboard_arrow_up_rounded,
+                        color: icon,
+                        size: 48,
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: size.width,
+                  height: size.height * 0.23,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      DragTarget(
+                        builder: (context, list, list2) {
+                          return Container(
+                            padding: EdgeInsets.all(3),
+                            width: size.width * 0.2,
+                            height: size.width * 0.5,
+                            child: Icon(
+                              Icons.keyboard_arrow_left_rounded,
+                              color: icon,
+                              size: 48,
+                            ),
+                          );
+                        },
+                        onWillAccept: (item) {
+                          debugPrint('<================');
+                          willAcceptStream.add(-50);
+                          _fuctionDrag("<================");
+                          return false;
+                        },
+                        onLeave: (item) {
+                          debugPrint('RESET');
+                          willAcceptStream.add(0);
+                        },
+                      ),
+                      Container(
+                        padding: const EdgeInsets.all(2.5),
+                        width: size.width * 0.5,
+                        height: size.width * 0.5,
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: [
+                              Colors.transparent,
+                              Colors.transparent,
+                              Color(0xFF57A519),
+                              Color(0xFF3D7311),
+                              Color(0xFF81F224),
+                            ],
+                          ),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Container(
+                          padding: const EdgeInsets.all(18),
+                          width: size.width * 0.4,
+                          height: size.width * 0.4,
+                          decoration: BoxDecoration(
+                            color: background,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Draggable(
+                            axis: Axis.horizontal,
+                            feedback: StreamBuilder(
+                              initialData: 0,
+                              stream: willAcceptStream,
+                              builder: (context, snapshot) {
+                                return Container(
+                                  width: size.width * 0.4,
+                                  height: size.width * 0.4,
+                                  decoration: BoxDecoration(
+                                    color: (snapshot.data as num) > 0
+                                        ? const Color(0xFFC24547)
+                                        : (snapshot.data) == 0
+                                            ? buttonBackground
+                                            : const Color(0xFF1B94CA),
+                                    shape: BoxShape.circle,
+                                  ),
+                                );
+                              },
+                            ),
+                            childWhenDragging: Container(),
+                            child: Container(
+                              width: size.width * 0.4,
+                              height: size.width * 0.4,
+                              decoration: BoxDecoration(
+                                color: buttonBackground,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            onDraggableCanceled: (v, f) => setState(
+                              () {
+                                willAcceptStream.add(0);
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      DragTarget(
+                        builder: (context, list, list2) {
+                          return Container(
+                            padding: EdgeInsets.all(3),
+                            width: size.width * 0.2,
+                            height: size.width * 0.5,
+                            child: Icon(
+                              Icons.keyboard_arrow_right_rounded,
+                              color: icon,
+                              size: 48,
+                            ),
+                          );
+                        },
+                        onWillAccept: (item) {
+                          debugPrint('================>');
+                          willAcceptStream.add(50);
+                          _fuctionDrag("================>");
+                          return false;
+                        },
+                        onLeave: (item) {
+                          debugPrint('RESET');
+                          willAcceptStream.add(0);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: size.width,
+                  height: size.height * 0.20,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Icon(
+                        Icons.keyboard_arrow_down_rounded,
+                        color: icon,
+                        size: 48,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          InkWell(
+                            onTap: () {
+                              print("Start Pressed");
+                            },
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            child: const Icon(
+                              Icons.volume_up_rounded,
+                              color: Color(0xFF57A519),
+                              size: 35,
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              setState(
+                                () {
+                                  background =
+                                      background == AppColors.darkBackground
+                                          ? AppColors.lightBackground
+                                          : AppColors.darkBackground;
+                                  text = text == AppColors.darkext
+                                      ? AppColors.lightText
+                                      : AppColors.darkext;
+                                  select = select == AppColors.darkSelect
+                                      ? AppColors.lightSelect
+                                      : AppColors.darkSelect;
+                                  icon = icon == AppColors.darkIcon
+                                      ? AppColors.lightIcon
+                                      : AppColors.darkIcon;
+                                  iconButton =
+                                      iconButton == AppColors.darkIconButton
+                                          ? AppColors.lightIconButton
+                                          : AppColors.darkIconButton;
+                                  buttonBackground = buttonBackground ==
+                                          AppColors.darkButtonBackground
+                                      ? AppColors.lightButtonBackground
+                                      : AppColors.darkButtonBackground;
+                                  darkMode = darkMode == AppColors.darkDarkMode
+                                      ? AppColors.lightDarkMode
+                                      : AppColors.darkDarkMode;
+                                  uamLogo = uamLogo == AppColors.darkUAM
+                                      ? AppColors.lightUAM
+                                      : AppColors.darkUAM;
+                                },
+                              );
+                              print("Power Pressed");
+                            },
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            child: darkMode,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+          ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

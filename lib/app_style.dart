@@ -12,7 +12,7 @@ class AppColors {
     color: lightIcon,
     size: 25,
   );
-  static const AssetImage lightUAM = AssetImage('assets/img/uam.png');
+  static const AssetImage lightUAM = AssetImage('assets/img/light_uam.png');
 
   static const Color darkBackground = Color(0xFF141414);
   static const Color darkext = Color(0xFFAFAFAF);
@@ -25,5 +25,5 @@ class AppColors {
     color: darkIcon,
     size: 25,
   );
-  static const AssetImage darkUAM = AssetImage('assets/img/uam_drk.png');
+  static const AssetImage darkUAM = AssetImage('assets/img/dark_uam.png');
 }
