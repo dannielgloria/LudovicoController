@@ -1,4 +1,4 @@
-# ludovico
+# ludovic
 
 A new Flutter project.
 

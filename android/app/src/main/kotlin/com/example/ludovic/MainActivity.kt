@@ -1,4 +1,4 @@
-package com.example.ludovico
+package com.example.ludovic
 
 import io.flutter.embedding.android.FlutterActivity
 
