@@ -5,6 +5,7 @@ import 'package:rxdart/rxdart.dart';
 
 import 'app_style.dart';
 import 'bluetooth.dart';
+import 'bt.dart';
 
 void main() {
   SystemChrome.setPreferredOrientations(
@@ -110,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => Bluetooth()),
+                                  builder: (context) => Bluetooth2()),
                             );
                           },
                           child: Container(

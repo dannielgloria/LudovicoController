@@ -41,6 +41,16 @@ class _BluetoothPageState extends State<BluetoothPage> {
   // Track the Bluetooth connection with the remote device
   BluetoothConnection? connection;
 
+  // User Interface
+  Color background = AppColors.lightBackground;
+  Color text = AppColors.lightText;
+  Color select = AppColors.lightSelect;
+  Color icon = AppColors.lightIcon;
+  Color buttonBackground = AppColors.lightButtonBackground;
+  Color iconButton = AppColors.lightIconButton;
+  Icon darkMode = AppColors.lightDarkMode;
+  AssetImage uamLogo = AppColors.lightUAM;
+
   int? _deviceState;
 
   bool isDisconnecting = false;
