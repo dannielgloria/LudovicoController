@@ -1,4 +1,6 @@
 // For performing some operations asynchronously
+// ignore_for_file: sized_box_for_whitespace
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
@@ -14,9 +16,11 @@ import 'app_style.dart';
 import 'main.dart';
 
 class Bluetooth2 extends StatelessWidget {
+  const Bluetooth2({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Bluetooth Connection',
       home: Scaffold(
@@ -27,7 +31,7 @@ class Bluetooth2 extends StatelessWidget {
 }
 
 class BluetoothPage extends StatefulWidget {
-  BluetoothPage({Key? key}) : super(key: key);
+  const BluetoothPage({Key? key}) : super(key: key);
   @override
   _BluetoothPageState createState() => _BluetoothPageState();
 }
@@ -44,10 +48,10 @@ class _BluetoothPageState extends State<BluetoothPage> {
 
   // User Interface
   Color background = AppColors.lightBackground;
-  Color text = AppColors.lightText;
+  Color text = AppColors.lightSelect;
   Color select = AppColors.lightSelect;
   Color icon = AppColors.lightIcon;
-  Color buttonBackground = AppColors.lightButtonBackground;
+  Color buttonBackground = AppColors.blueButtonBackground;
   Color iconButton = AppColors.lightIconButton;
   Icon darkMode = AppColors.lightDarkMode;
   AssetImage uamLogo = AppColors.lightUAM;
@@ -165,10 +169,12 @@ class _BluetoothPageState extends State<BluetoothPage> {
     var size = MediaQuery.of(context).size;
 
     return SafeArea(
+      top: false,
       child: Container(
         key: _scaffoldKey,
         width: size.width,
         height: size.height,
+        padding: EdgeInsets.only(bottom: size.height * 0.1),
         color: background,
         child: FittedBox(
           fit: BoxFit.contain,
@@ -177,7 +183,7 @@ class _BluetoothPageState extends State<BluetoothPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                Container(
+                SizedBox(
                   width: size.width,
                   height: size.height * 0.1,
                   child: Padding(
@@ -198,7 +204,7 @@ class _BluetoothPageState extends State<BluetoothPage> {
                               TextSpan(
                                 text: ' Bluetooth',
                                 style: TextStyle(
-                                  fontWeight: FontWeight.normal,
+                                  fontWeight: FontWeight.bold,
                                   color: text,
                                   fontSize: 20,
                                 ),
@@ -278,8 +284,9 @@ class _BluetoothPageState extends State<BluetoothPage> {
                   ),
                 ),
                 Container(
+                  margin: EdgeInsets.only(top: 40),
                   width: size.width,
-                  height: size.height * 0.11,
+                  height: size.height * 0.1,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -298,7 +305,7 @@ class _BluetoothPageState extends State<BluetoothPage> {
                 ),
                 Container(
                   width: size.width,
-                  height: size.height * 0.11,
+                  height: size.height * 0.15,
                   child: Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Row(
@@ -346,22 +353,20 @@ class _BluetoothPageState extends State<BluetoothPage> {
                   ),
                 ),
                 Container(
+                  margin: EdgeInsets.only(
+                    top: size.height * 0.1,
+                  ),
                   width: size.width,
-                  height: size.height * 0.11,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Text(
-                        'NOTA: Si no puedes encontrar el dispositivo en la lista, empareje el dispositivo en a la configuración de bluetooth',
-                        style: TextStyle(
-                          fontWeight: FontWeight.normal,
-                          color: Colors.red[400],
-                          fontSize: 24,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+                  height: size.height * 0.15,
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(
+                    'NOTA: Si no puedes encontrar el dispositivo en la lista, empareje el dispositivo en a la configuración de bluetooth',
+                    style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      color: Colors.red.shade400,
+                      fontSize: 18,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
                 Container(

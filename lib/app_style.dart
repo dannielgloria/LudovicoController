@@ -7,6 +7,7 @@ class AppColors {
   static const Color lightIcon = Color(0xFF7E7E7E);
   static const Color lightIconButton = Colors.black;
   static const Color lightButtonBackground = Color(0xFFE7E7E7);
+  static const Color blueButtonBackground = Color.fromRGBO(2, 136, 209, 1);
   static const Icon lightDarkMode = Icon(
     Icons.dark_mode,
     color: lightIcon,

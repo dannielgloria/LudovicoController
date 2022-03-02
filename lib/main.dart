@@ -7,7 +7,9 @@ import 'app_style.dart';
 import 'bluetooth.dart';
 import 'bt.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
@@ -163,7 +165,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                           child: const Icon(
                             Icons.clean_hands_rounded,
-                            color: Color(0xFF0077B6),
+                            color: AppColors.blueButtonBackground,
                             size: 38,
                           ),
                         ),
