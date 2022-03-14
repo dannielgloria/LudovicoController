@@ -1,10 +1,24 @@
+import 'dart:typed_data';
+import 'dart:async';
+import 'dart:convert';
+
+// For using PlatformException
+import 'package:flutter/services.dart';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+
+import 'app_style.dart';
+import 'main.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'app_style.dart';
-import 'bluetooth.dart';
+//import 'bluetooth.dart';
 import 'bt.dart';
 
 Future<void> main() async {
@@ -54,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
   }
 
-  void _fuctionDrag(String msg) {
+  void _showAction(String msg) {
     final snackBar = SnackBar(
         content: Text(msg),
         behavior: SnackBarBehavior.floating,
@@ -151,7 +165,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       InkWell(
                         onTap: () {
-                          print("Dispensando Gel");
+                          _showAction("Dispensando");
                         },
                         splashColor: Colors.transparent,
                         highlightColor: Colors.transparent,
@@ -200,12 +214,17 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
-                            Text(
-                              "Si",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: iconButton,
-                                fontSize: 24,
+                            InkWell(
+                              onTap: () {
+                                _showAction("Si");
+                              },
+                              child: Text(
+                                "Si",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: iconButton,
+                                  fontSize: 24,
+                                ),
                               ),
                             ),
                             Icon(
@@ -213,12 +232,17 @@ class _MyHomePageState extends State<MyHomePage> {
                               color: text,
                               size: 38,
                             ),
-                            Text(
-                              "No",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: iconButton,
-                                fontSize: 24,
+                            InkWell(
+                              onTap: () {
+                                _showAction("No");
+                              },
+                              child: Text(
+                                "No",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: iconButton,
+                                  fontSize: 24,
+                                ),
                               ),
                             ),
                           ],
@@ -245,12 +269,17 @@ class _MyHomePageState extends State<MyHomePage> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: <Widget>[
-                            Text(
-                              "Der",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: iconButton,
-                                fontSize: 24,
+                            InkWell(
+                              onTap: () {
+                                _showAction("Derecha");
+                              },
+                              child: Text(
+                                "Der",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: iconButton,
+                                  fontSize: 24,
+                                ),
                               ),
                             ),
                             Icon(
@@ -258,12 +287,17 @@ class _MyHomePageState extends State<MyHomePage> {
                               color: text,
                               size: 38,
                             ),
-                            Text(
-                              "Izq",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: iconButton,
-                                fontSize: 24,
+                            InkWell(
+                              onTap: () {
+                                _showAction("Izquierda");
+                              },
+                              child: Text(
+                                "Izq",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: iconButton,
+                                  fontSize: 24,
+                                ),
                               ),
                             ),
                           ],
@@ -308,7 +342,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         onWillAccept: (item) {
                           debugPrint('<================');
                           willAcceptStream.add(-50);
-                          _fuctionDrag("<================");
+                          _showAction("<================");
                           return false;
                         },
                         onLeave: (item) {
@@ -395,7 +429,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         onWillAccept: (item) {
                           debugPrint('================>');
                           willAcceptStream.add(50);
-                          _fuctionDrag("================>");
+                          _showAction("================>");
                           return false;
                         },
                         onLeave: (item) {
