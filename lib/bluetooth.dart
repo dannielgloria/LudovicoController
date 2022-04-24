@@ -19,19 +19,19 @@ class Bluetooth extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Bluetooth Connection',
       home: Scaffold(
-        body: BluetoothPage(),
+        body: MyHomePage(),
       ),
     );
   }
 }
 
-class BluetoothPage extends StatefulWidget {
-  BluetoothPage({Key? key}) : super(key: key);
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key? key}) : super(key: key);
   @override
-  _BluetoothPageState createState() => _BluetoothPageState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _BluetoothPageState extends State<BluetoothPage> {
+class _MyHomePageState extends State<MyHomePage> {
   // Initializing the Bluetooth connection state to be unknown
   BluetoothState _bluetoothState = BluetoothState.UNKNOWN;
   // Initializing a global key, as it would help us in showing a SnackBar later

@@ -15,7 +15,7 @@ class AppColors {
   static const AssetImage lightUAM = AssetImage('assets/img/light_uam.png');
 
   static const Color darkBackground = Color(0xFF141414);
-  static const Color darkext = Color(0xFFAFAFAF);
+  static const Color darkText = Color(0xFFAFAFAF);
   static const Color darkSelect = Colors.white;
   static const Color darkIcon = Color(0xFF767676);
   static const Color darkIconButton = Colors.white;

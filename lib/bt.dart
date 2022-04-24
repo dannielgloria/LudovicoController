@@ -525,10 +525,10 @@ class _BluetoothPageState extends State<BluetoothPage> {
     String message, {
     Duration duration: const Duration(seconds: 3),
   }) async {
-    await new Future.delayed(new Duration(milliseconds: 100));
+    await Future.delayed(const Duration(milliseconds: 100));
     _scaffoldKey.currentState!.showSnackBar(
-      new SnackBar(
-        content: new Text(
+      SnackBar(
+        content: Text(
           message,
         ),
         duration: duration,
@@ -536,3 +536,46 @@ class _BluetoothPageState extends State<BluetoothPage> {
     );
   }
 }
+
+/**  
+InkWell(
+                            onTap: () {
+                              setState(
+                                () {
+                                  background =
+                                      background == AppColors.darkBackground
+                                          ? AppColors.lightBackground
+                                          : AppColors.darkBackground;
+                                  text = text == AppColors.darkext
+                                      ? AppColors.lightText
+                                      : AppColors.darkext;
+                                  select = select == AppColors.darkSelect
+                                      ? AppColors.lightSelect
+                                      : AppColors.darkSelect;
+                                  icon = icon == AppColors.darkIcon
+                                      ? AppColors.lightIcon
+                                      : AppColors.darkIcon;
+                                  iconButton =
+                                      iconButton == AppColors.darkIconButton
+                                          ? AppColors.lightIconButton
+                                          : AppColors.darkIconButton;
+                                  buttonBackground = buttonBackground ==
+                                          AppColors.darkButtonBackground
+                                      ? AppColors.lightButtonBackground
+                                      : AppColors.darkButtonBackground;
+                                  darkMode = darkMode == AppColors.darkDarkMode
+                                      ? AppColors.lightDarkMode
+                                      : AppColors.darkDarkMode;
+                                  uamLogo = uamLogo == AppColors.darkUAM
+                                      ? AppColors.lightUAM
+                                      : AppColors.darkUAM;
+                                },
+                              );
+                              print("Power Pressed");
+                            },
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            child: darkMode,
+                          ),
+
+                   */ 
